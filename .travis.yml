@@ -15,7 +15,7 @@ cache:
 before_install:
   - git fetch origin --tags
 before_script:
-  - mkdir -p ./coverage
+  - npm prune
   - npm install subrequests
 script:
   - npm test
