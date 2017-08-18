@@ -1,0 +1,27 @@
+language: node_js
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
+node_js:
+  - '6'
+env:
+  - CXX=g++-4.8
+cache:
+  directories:
+    - node_modules
+    - .tmp
+before_install:
+  - git fetch origin --tags
+before_script:
+  - mkdir -p ./coverage
+  - npm install subrequests
+script:
+  - npm test
+after_success:
+  - npm run semantic-release
+
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
