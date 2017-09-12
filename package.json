@@ -27,7 +27,7 @@
     "subrequests": "^1.0.3"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.0",
     "eslint": "^4.4.1",
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-flowtype": "^2.35.0",
