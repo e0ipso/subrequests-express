@@ -42,7 +42,7 @@
     "validate-commit-msg": "^2.14.0"
   },
   "dependencies": {
-    "body-parser": "^1.17.2",
+    "body-parser": "^1.18.2",
     "config": "^1.26.1",
     "coveralls": "^2.13.1",
     "flow-copy-source": "^1.2.0",
