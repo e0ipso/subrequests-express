@@ -24,7 +24,7 @@
   "license": "GPL-2.0",
   "peerDependencies": {
     "express": "^4.14.0",
-    "subrequests": "^1.0.3"
+    "subrequests": "^2.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.0",
