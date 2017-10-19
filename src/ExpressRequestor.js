@@ -31,13 +31,18 @@ class ExpressRequestor extends HttpRequestor implements RequestorInterface {
   /**
    * Create a new ExpressRequestor object.
    *
-   * @param {express$Request} req
+   * @param {$Subtype<express$Request>} req
    *   The Express request object to the subrequests endpoint.
    */
-  constructor(req: express$Request) {
+  constructor(req: $Subtype<express$Request>) {
     super();
-    this.host = req.headers.host;
-    this.protocol = req.protocol;
+    const defaults = {
+      host: req.headers.host,
+      protocol: req.protocol,
+    };
+    const { host, protocol } = Object.assign({}, defaults, req.subrequestsOptions);
+    this.host = host;
+    this.protocol = protocol;
   }
 
   /**
