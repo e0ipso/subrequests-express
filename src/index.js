@@ -7,7 +7,12 @@ const bodyParser = require('body-parser');
 const processIncomingBlueprint = require('./controller');
 const Router = require('express').Router;
 
-module.exports = (routePath?: string): express$Router => {
+type subrequestsOptions = {
+  host?: string,
+  protocol?: string,
+};
+
+module.exports = (routePath?: string, options: subrequestsOptions = {}): express$Router => {
   const router = new Router();
 
   router.use(bodyParser.text({ type: '*/*' }));
@@ -16,6 +21,10 @@ module.exports = (routePath?: string): express$Router => {
   // need to and include variables like :version if needed. If there is no
   // configuration to be found, then default to '/subrequests'.
   router.route(routePath || '/subrequests')
+    .all((req: $Subtype<express$Request>, res: express$Response, next: express$NextFunction) => {
+      req.subrequestsOptions = options;
+      next();
+    })
     .post(
       (req: $Subtype<express$Request>, res: express$Response) =>
         processIncomingBlueprint(req.body, req, res)
