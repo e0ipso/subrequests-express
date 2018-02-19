@@ -1,6 +1,6 @@
 {
   "name": "subrequests-express",
-  "version": "1.12.1",
+  "version": "1.13.0",
   "description": "Integrates Subrequests in your Express project",
   "main": "index.js",
   "scripts": {
