@@ -3,6 +3,7 @@
 import type { Response } from 'subrequests/types/Responses';
 import type { RequestorInterface } from 'subrequests/types/Requestor';
 
+const _ = require('lodash');
 const { HttpRequestor } = require('subrequests').lib;
 
 const detectProtocol = new RegExp('^(?:[a-z]+:)?//', 'i');
@@ -28,6 +29,7 @@ function urlIsInternal(url: string): boolean {
 class ExpressRequestor extends HttpRequestor implements RequestorInterface {
   host: string;
   protocol: string;
+  defaultRequestOptions: Object;
   /**
    * Create a new ExpressRequestor object.
    *
@@ -40,9 +42,11 @@ class ExpressRequestor extends HttpRequestor implements RequestorInterface {
       host: req.headers.host,
       protocol: req.protocol,
     };
-    const { host, protocol } = Object.assign({}, defaults, req.subrequestsOptions);
+    const options = req.subrequestsOptions || {};
+    const { host, protocol } = Object.assign({}, defaults, options);
     this.host = host;
     this.protocol = protocol;
+    this.defaultRequestOptions = Object.assign({}, options.requestOptions);
   }
 
   /**
@@ -68,13 +72,14 @@ class ExpressRequestor extends HttpRequestor implements RequestorInterface {
     options: Object,
     subrequestId: string
   ): Promise<Response> {
+    const actualOptions = _.merge({}, this.defaultRequestOptions, options);
     // If the request is for this host, then add it before making the request.
     // This is specially useful to reuse blueprints across environments.
     if (urlIsInternal(uri)) {
       uri = `${this.protocol}://${this.host}${uri}`;
     }
     // If not, then just do the HTTP request.
-    return this._doRequest(method, uri, options, subrequestId);
+    return this._doRequest(method, uri, actualOptions, subrequestId);
   }
 
   /**

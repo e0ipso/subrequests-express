@@ -48,6 +48,6 @@ module.exports = {
       'fakeReq'
     );
     test.ok(res instanceof Promise);
-    test.done();
+    res.catch(() => test.done());
   },
 };
