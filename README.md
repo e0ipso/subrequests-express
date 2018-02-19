@@ -71,7 +71,7 @@ const { subrequestsRouterFactory } = require('subrequests-express');
 // All your route declarations.
 // …
 
-router.all(config.get('subrequests.route'), (req, res, next) => {
+router.all('/subrequests', (req, res, next) => {
   // Make sure that subrequests-json-merger merges responses using JSON.
   req.subrequestsResponseMerger = JsonResponse;
   next();
