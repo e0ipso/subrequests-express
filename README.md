@@ -15,41 +15,58 @@ To support subrequests in your express server you only need to add it to your ro
 
 ```js
 // app.js
-const { SubrequestsRouter } = require('subrequests-express');
+const { subrequestsRouterFactory } = require('subrequests-express');
 
 // All your route declarations.
 // …
 
-// Add the request aggregator.
-router.use(SubrequestsRouter);
+const options = {};
+// Add the request aggregator on the '/subrequests' route.
+router.use(subrequestsRouterFactory('/subrequests', options));
 ```
 
 This will add a route in `/subrequests` that will process blueprints either by GET or POST requests.
 
-#### Customize the Route
+#### Options
 
-In order to customize the route of the request aggregator you will need to add it to your
-configuration object using `config`.
+Subrequests is very useful when you are making internal requests. Without any options, subrequests
+will use the hostname in the master request to issue relative requests. A request is considered
+internal if it has a `uri` that it's a path instead of a fully qualified URL.
 
-Set the route in the configuration json/yaml for your environment.
-
-```yml
-subrequests:
-  route: '/:version/my-request-aggregator'
-```
-
-That will accept requests to `https://example.org/^v5.0.1/my-request-aggregator`, for instance.
-Note that you can include parameters that Express will process normally.
+  - **`host`**: The host to use for internal requests. Ex: `localhost`.
+  - **`port`**: The port to use for internal requests. Ex: `3000`.
 
 #### Customize the Response Format
 
-You can provide a subresponse merged plugin by attaching it to the express request object under the
+You can provide a subresponse merger plugin by attaching it to the express request object under the
 `subrequestsResponseMerge` key. You can do something like:
 
 ```js
 // app.js
-const { SubrequestsRouter } = require('subrequests-express');
+const { subrequestsRouterFactory } = require('subrequests-express');
 const JsonResponse = require('subrequests-json-merger');
+
+// All your route declarations.
+// …
+
+router.all('/subrequests', (req, res, next) => {
+  // Make sure that subrequests-json-merger merges responses using JSON.
+  req.subrequestsResponseMerger = JsonResponse;
+  next();
+});
+// Request aggregator.
+router.use(subrequestsRouterFactory('/subrequests', {}));
+
+```
+
+#### Defaults for request
+
+You can provide default options for request library by attaching it to the express request object under the
+`subrequestsOptions.requestOptions` key. You can do something like:
+
+```js
+// app.js
+const { subrequestsRouterFactory } = require('subrequests-express');
 
 // All your route declarations.
 // …
@@ -60,7 +77,18 @@ router.all(config.get('subrequests.route'), (req, res, next) => {
   next();
 });
 // Request aggregator.
-router.use(SubrequestsRouter);
+router.use(
+  (req, res, next) => {
+    req.subrequestsOptions = {
+      requestOptions: { headers: { 'X-Powered-By': 'Subrequests'} },
+    };
+    next();
+  },
+  subrequestsRouterFactory(
+    '/subrequests',
+    { host: 'localhost', port: 3000 }
+  )
+);
 
 ```
 
