@@ -22,7 +22,7 @@ module.exports = (routePath?: string, options: subrequestsOptions = {}): express
   // configuration to be found, then default to '/subrequests'.
   router.route(routePath || '/subrequests')
     .all((req: $Subtype<express$Request>, res: express$Response, next: express$NextFunction) => {
-      req.subrequestsOptions = options;
+      req.subrequestsOptions = Object.assign({}, options, req.subrequestsOptions);
       next();
     })
     .post(
