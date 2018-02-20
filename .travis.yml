@@ -5,8 +5,7 @@ cache:
 notifications:
   email: false
 node_js:
-  - '6'
-  - '8'
+  - 'lts/boron'
 env:
   - CXX=g++-4.8
 cache:
@@ -24,7 +23,6 @@ after_success:
   # Report coverage to coveralls.io
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   - rm -rf ./coverage
-  - npm run semantic-release
 
 branches:
   except:
