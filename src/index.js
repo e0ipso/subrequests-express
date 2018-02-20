@@ -5,14 +5,16 @@
 
 const bodyParser = require('body-parser');
 const processIncomingBlueprint = require('./controller');
-const Router = require('express').Router;
+const registerMiddlewareRunner = require('./executeRoute');
+const { Router } = require('express');
 
 type subrequestsOptions = {
   host?: string,
   protocol?: string,
 };
 
-module.exports = (routePath?: string, options: subrequestsOptions = {}): express$Router => {
+module.exports = (routePath?: string, options: subrequestsOptions = {}, app: *): express$Router => {
+  registerMiddlewareRunner(app);
   const router = new Router();
 
   router.use(bodyParser.text({ type: '*/*' }));
@@ -25,14 +27,10 @@ module.exports = (routePath?: string, options: subrequestsOptions = {}): express
       req.subrequestsOptions = Object.assign({}, options, req.subrequestsOptions);
       next();
     })
-    .post(
-      (req: $Subtype<express$Request>, res: express$Response) =>
-        processIncomingBlueprint(req.body, req, res)
-    )
-    .get(
-      (req: $Subtype<express$Request>, res: express$Response) =>
-        processIncomingBlueprint(req.query.query, req, res)
-    );
+    .post((req: $Subtype<express$Request>, res: express$Response) =>
+      processIncomingBlueprint(req.body, req, res))
+    .get((req: $Subtype<express$Request>, res: express$Response) =>
+      processIncomingBlueprint(req.query.query, req, res));
 
   return router;
 };

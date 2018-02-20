@@ -19,10 +19,11 @@ const { subrequestsRouterFactory } = require('subrequests-express');
 
 // All your route declarations.
 // …
+const app = express();
 
 const options = {};
 // Add the request aggregator on the '/subrequests' route.
-router.use(subrequestsRouterFactory('/subrequests', options));
+router.use(subrequestsRouterFactory('/subrequests', options, app));
 ```
 
 This will add a route in `/subrequests` that will process blueprints either by GET or POST requests.
@@ -48,6 +49,7 @@ const JsonResponse = require('subrequests-json-merger');
 
 // All your route declarations.
 // …
+const app = express();
 
 router.all('/subrequests', (req, res, next) => {
   // Make sure that subrequests-json-merger merges responses using JSON.
@@ -55,14 +57,15 @@ router.all('/subrequests', (req, res, next) => {
   next();
 });
 // Request aggregator.
-router.use(subrequestsRouterFactory('/subrequests', {}));
+router.use(subrequestsRouterFactory('/subrequests', {}, app));
 
 ```
 
 #### Defaults for request
 
-You can provide default options for request library by attaching it to the express request object under the
-`subrequestsOptions.requestOptions` key. You can do something like:
+You can override properties of the generated request objects (IncomingMessage) by attaching it to
+the express request object under the `subrequestsOptions.requestOptions` key. You can do something
+like:
 
 ```js
 // app.js
@@ -70,6 +73,7 @@ const { subrequestsRouterFactory } = require('subrequests-express');
 
 // All your route declarations.
 // …
+const app = express();
 
 router.all('/subrequests', (req, res, next) => {
   // Make sure that subrequests-json-merger merges responses using JSON.
@@ -86,7 +90,8 @@ router.use(
   },
   subrequestsRouterFactory(
     '/subrequests',
-    { host: 'localhost', port: 3000 }
+    { host: 'localhost', port: 3000 },
+    app
   )
 );
 
