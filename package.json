@@ -9,7 +9,6 @@
     "commitmsg": "validate-commit-msg",
     "precommit": "npm run flow && npm run lint",
     "prepush": "npm test && npm run coverage",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "postinstall": "npm run build",
     "flow": "flow",
     "build": "flow-remove-types src/ --out-dir lib/ && flow-copy-source src lib",
@@ -39,8 +38,6 @@
     "husky": "^0.14.3",
     "istanbul": "^0.4.5",
     "nodeunit": "^0.11.1",
-    "semantic-release": "^8.2.2",
-    "semantic-release-conventional-commits": "^2.0.0",
     "sinon": "^4.2.2",
     "subrequests": "^2.7.3",
     "validate-commit-msg": "^2.14.0"
@@ -54,9 +51,6 @@
     "lodash": "^4.17.5",
     "qs": "^6.5.1",
     "snyk": "^1.69.7"
-  },
-  "release": {
-    "analyzeCommits": "semantic-release-conventional-commits"
   },
   "repository": {
     "type": "git",
