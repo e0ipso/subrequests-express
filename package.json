@@ -26,7 +26,7 @@
   "license": "GPL-2.0",
   "peerDependencies": {
     "express": "^4.14.0",
-    "subrequests": "^2.0.2"
+    "subrequests": "^2.7.3"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.0",
@@ -34,13 +34,15 @@
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-flowtype": "^2.35.0",
     "eslint-plugin-import": "^2.7.0",
-    "flow-bin": "^0.65.0",
+    "express": "^4.14.0",
+    "flow-bin": "^0.64.0",
     "husky": "^0.14.3",
     "istanbul": "^0.4.5",
     "nodeunit": "^0.11.1",
     "semantic-release": "^12.4.1",
     "semantic-release-conventional-commits": "^2.0.0",
     "sinon": "^4.2.2",
+    "subrequests": "^2.7.3",
     "validate-commit-msg": "^2.14.0"
   },
   "dependencies": {
@@ -50,10 +52,8 @@
     "flow-copy-source": "^1.2.0",
     "flow-remove-types": "^1.2.1",
     "lodash": "^4.17.5",
+    "qs": "^6.5.1",
     "snyk": "^1.69.7"
-  },
-  "release": {
-    "analyzeCommits": "semantic-release-conventional-commits"
   },
   "repository": {
     "type": "git",
