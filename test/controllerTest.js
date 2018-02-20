@@ -20,7 +20,7 @@ module.exports = {
     res.status.returns(res);
     res.send = sinon.stub();
     res.send.returns(res);
-    controller('', { headers: {} }, res)
+    controller('', { headers: {}, runMiddleware: sinon.stub() }, res)
       .then(() => {
         test.deepEqual(res.set.args[0][0], { foo: 'bar' });
         test.equal(res.status.args[0][0], 207);
@@ -45,7 +45,7 @@ module.exports = {
     res.status.returns(res);
     res.send = sinon.stub();
     res.send.returns(res);
-    controller('', { headers: {} }, res)
+    controller('', { headers: {}, runMiddleware: sinon.stub() }, res)
       .then(() => {
         test.equal(res.status.args[0][0], 1234);
         test.done();
@@ -65,7 +65,7 @@ module.exports = {
     res.status.returns(res);
     res.send = sinon.stub();
     res.send.returns(res);
-    controller('', { headers: {} }, res)
+    controller('', { headers: {}, runMiddleware: sinon.stub() }, res)
       .then(() => {
         test.equal(res.status.args[0][0], 500);
         test.equal(res.set.args[0][0], 'Content-Type');

@@ -28,7 +28,7 @@ module.exports = (
   .then((response) => {
     // Write all the headers to the response.
     const headers = [...response.headers].reduce((heads, keyval) => {
-      heads[keyval[0]] = keyval[1];
+      heads[keyval[0]] = keyval[1]; // eslint-disable-line prefer-destructuring
       return heads;
     }, {});
     res
