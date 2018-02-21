@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const endResponse = require('./endResponse');
 
 /**
  * Creates a new request object based on an existing request and some overrides.
@@ -58,15 +59,7 @@ const createResponse = (originalRes, req, callback) => {
   newRes.req = req;
 
   // Response termination using our custom callback instead.
-  newRes.end = (data) => {
-    if (callback) {
-      const headers = Object.keys(newRes._headerNames).reduce(
-        (heads, name) => Object.assign(heads, { [name]: newRes.getHeader(name) }),
-        {}
-      );
-      callback(data, newRes.statusCode, headers);
-    }
-  };
+  newRes.end = endResponse(newRes, callback);
   newRes.send = newRes.end;
   newRes.write = newRes.end;
 
@@ -92,9 +85,7 @@ const createResponse = (originalRes, req, callback) => {
  *   A tuple containing the request and response objects.
  */
 const createRequestAndResponse = (path, req, res, requestOverrides, callback) => {
-  if (callback) {
-    callback = _.once(callback);
-  }
+  callback = _.once(callback);
   const newRew = createRequest(path, req, requestOverrides);
   const newRes = createResponse(res, newRew, callback);
   return [newRew, newRes];
