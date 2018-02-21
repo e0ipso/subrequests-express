@@ -1,5 +1,7 @@
 const ExpressRequestor = require('./ExpressRequestorTest');
 const controller = require('./controllerTest');
+const executeRoute = require('./executeRouteTest');
+const endResponse = require('./endResponseTest');
 const sinon = require('sinon');
 
 module.exports = {
@@ -27,4 +29,6 @@ module.exports = {
   },
   ExpressRequestor,
   controller,
+  executeRoute,
+  endResponse,
 };
