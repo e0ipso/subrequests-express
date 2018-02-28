@@ -51,10 +51,13 @@ class ExpressRequestor extends HttpRequestor implements RequestorInterface {
     this.defaultRequestOptions = Object.assign({}, options.requestOptions);
     this.masterRequest = req;
     if (!this.masterRequest.runMiddleware) {
-      let errorMessage = '"runMiddleware" was not registered properly in ';
-      errorMessage += 'the express app. Please refer to the installation ';
-      errorMessage += 'instructions in the README documentation.';
-      throw new Error(errorMessage);
+      this.masterRequest.runMiddleware = () => {
+        let errorMessage = '"runMiddleware" was not registered properly in ';
+        errorMessage += 'the express app. Please refer to the installation ';
+        errorMessage += 'instructions in the README documentation for ';
+        errorMessage += '"subrequests-express".';
+        throw new Error(errorMessage);
+      };
     }
   }
 
