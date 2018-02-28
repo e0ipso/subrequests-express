@@ -1,10 +1,15 @@
 // @flow
 
+import type { RequestorInterface } from 'subrequests/types/Requestor';
+
 const ExpressRequestor = require('./ExpressRequestor');
 const subrequests = require('subrequests');
 const util = require('util');
 
-type enhancedRequest = express$Request & { subrequestsResponseMerger: any };
+type enhancedRequest = express$Request & {
+  subrequestsResponseMerger: any,
+  subrequestsRequestor: ?RequestorInterface,
+};
 
 /**
  * Executes a blueprint and composes the Express response.
@@ -24,7 +29,11 @@ module.exports = (
   req: enhancedRequest,
   res: express$Response
 ): Promise<void> => subrequests
-  .request(blueprint, new ExpressRequestor(req), req.subrequestsResponseMerger)
+  .request(
+    blueprint,
+    req.subrequestsRequestor || new ExpressRequestor(req),
+    req.subrequestsResponseMerger
+  )
   .then((response) => {
     // Write all the headers to the response.
     const headers = [...response.headers].reduce((heads, keyval) => {

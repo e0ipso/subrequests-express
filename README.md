@@ -57,7 +57,34 @@ router.all('/subrequests', (req, res, next) => {
 });
 // Request aggregator.
 router.use(subrequestsRouterFactory('/subrequests', {}, app));
+```
 
+#### Customize the Way Subrequests Are Sent
+
+You can customize the way subrequests are sent. For that you only need to write a _requestor_. The
+[HttpRequestor](https://github.com/e0ipso/subrequests/blob/master/src/HttpRequestor.js) and the
+[ExpressRequestor](https://github.com/e0ipso/subrequests-express/blob/master/src/ExpressRequestor.js)
+are good examples. You can provide a custom requestor to `subrequests-express` by attaching your
+requestor object to `req.subrequestsRequestor`.
+
+```js
+// app.js
+const { subrequestsRouterFactory, ExpressRequestor } = require('subrequests-express');
+class CustomRequestor extends ExpressRequestor {
+  // …
+}
+
+// All your route declarations.
+// …
+const app = express();
+
+router.all('/subrequests', (req, res, next) => {
+  // Make sure that subrequests-json-merger merges responses using JSON.
+  req.subrequestsRequestor = new CustomRequestor(req);
+  next();
+});
+// Request aggregator.
+router.use(subrequestsRouterFactory('/subrequests', {}, app));
 ```
 
 #### Defaults for request
