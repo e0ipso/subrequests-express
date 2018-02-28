@@ -111,10 +111,11 @@ module.exports = {
   },
   testMissingRunMiddleware(test) {
     test.expect(1);
-    test.throws(() => new ExpressRequestor({
+    const sut = new ExpressRequestor({
       protocol: 'foo',
       headers: { host: 'bar' },
-    }), 'Error');
+    });
+    test.throws(() => sut.masterRequest.runMiddleware(), 'Error');
     test.done();
   },
   test_parseQueryString(test) {
