@@ -48,7 +48,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "config": "^3.0.0",
-    "flow-copy-source": "^2.0.2",
+    "flow-copy-source": "^2.0.8",
     "flow-remove-types": "^1.2.1",
     "lodash": "^4.17.11",
     "qs": "^6.5.1",
